@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="B1_1">
+        <item name="android:fontFamily">@fonts/pretendard_semibold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="B2_2">
+        <item name="android:fontFamily">@fonts/pretendard_medium</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="B3_2">
+        <item name="android:fontFamily">@fonts/pretendard_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

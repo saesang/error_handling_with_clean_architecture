@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">presentation</string>
+    <string name="title">오늘의 운세</string>
+    <string name="name_hint">이름을 입력해주세요</string>
+    <string name="save_btn">확인</string>
+    <string name="again_btn">다시하기</string>
+</resources>
