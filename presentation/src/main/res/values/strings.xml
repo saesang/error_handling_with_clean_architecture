@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">presentation</string>
+    <string name="app_name">TodayFortuneErrorHandling</string>
     <string name="title">오늘의 운세</string>
     <string name="name_hint">이름을 입력해주세요</string>
     <string name="save_btn">확인</string>
     <string name="again_btn">다시하기</string>
+    <string name="alert_error">에러가 발생했습니다!!</string>
+    <string name="error_handling_btn">새로고침</string>
 </resources>
