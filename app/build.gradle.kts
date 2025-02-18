@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.service)
+    alias(libs.plugins.google.crashlytics)
 }
 
 android {
@@ -62,4 +64,9 @@ dependencies {
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 }
