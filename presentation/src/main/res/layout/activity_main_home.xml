@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66C2D2F2"
+    tools:context=".MainHomeActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/B1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textColor="@color/GS_800" />
+
+        <EditText
+            android:id="@+id/input_name"
+            style="@style/B2_2"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="40dp"
+            android:autofillHints="username"
+            android:background="@null"
+            android:hint="@string/name_hint"
+            android:inputType="text"
+            android:textColor="@color/GS_700"
+            android:textColorHint="@color/GS_500" />
+
+        <TextView
+            android:id="@+id/text_fortune"
+            style="@style/B3_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/btn_300"
+            android:padding="12dp"
+            android:textColor="@color/GS_700"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/B3_2"
+            android:layout_width="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/selector_btn_enable"
+            android:enabled="false"
+            android:text="@string/save_btn"
+            android:textColor="@drawable/selector_text_enable"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_back"
+            style="@style/B3_2"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_500"
+            android:text="@string/again_btn"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
