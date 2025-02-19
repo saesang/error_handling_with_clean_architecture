@@ -11,22 +11,35 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 
-sealed class DataException(message: String, e: Throwable? = null) : Exception() {
-    class NetworkError(message: String, e: Throwable? = null) : DataException(message, e)
-    class ConnectionError(message: String, e: Throwable? = null) : DataException(message, e)
-    class TimeoutError(message: String, e: Throwable? = null) : DataException(message, e)
-    class DatabaseError(message: String, e: Throwable? = null) : DataException(message, e)
-    class FileIOError(message: String, e: Throwable? = null) : DataException(message, e)
-    class MemoryError(message: String, e: Throwable? = null) : DataException(message, e)
-    class UnknownError(message: String, e: Throwable? = null) : DataException(message, e)
-    class EmptyDataError(message: String, e: Throwable? = null) : DataException(message, e)
-    class MappingError(message: String, e: Throwable? = null) : DataException(message, e)
+sealed class DataException(message: String, cause: Throwable? = null) : Exception(message, cause) {
+    class NetworkConnectionError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class ServerError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class ClientError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class ConnectionError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class TimeoutError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class DatabaseError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class FileIOError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class MemoryError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class UnknownError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class EmptyDataError(message: String, cause: Throwable? = null) : DataException(message, cause)
+    class MappingError(message: String, cause: Throwable? = null) : DataException(message, cause)
 
     companion object {
         fun mapToDataException(e: Throwable): DataException {
             return when (e) {
-                is ConnectException, is HttpException ->
-                    NetworkError("네트워크 관련 오류", e)
+                is ConnectException ->
+                    NetworkConnectionError("서버 연결 실패", e)
+
+                is HttpException -> {
+                    val statusCode = e.code()
+                    val errorMessage = "서버 통신 오류(HTTP $statusCode)"
+
+                    when (statusCode) {
+                        in 400..499 -> ClientError(errorMessage, e)
+                        in 500..599 -> ServerError(errorMessage, e)
+                        else -> UnknownError("알 수 없는 서버 오류", e)
+                    }
+                }
 
                 is UnknownHostException ->
                     ConnectionError("인터넷 연결 없음", e)
@@ -48,7 +61,14 @@ sealed class DataException(message: String, e: Throwable? = null) : Exception() 
         }
 
         fun DataException.toFailure(): Failure {
-            return Failure.DataError(this)
+            return when(this) {
+                is NetworkConnectionError, is ServerError, is ClientError -> Failure.ServerFailure(this)
+                is ConnectionError, is TimeoutError -> Failure.NetworkFailure(this)
+                is DatabaseError -> Failure.DatabaseFailure(this)
+                is FileIOError -> Failure.FileIOFailure(this)
+                is EmptyDataError, is MappingError -> Failure.BusinessFailure(this)
+                is MemoryError, is UnknownError -> Failure.UnknownFailure(this)
+            }
         }
     }
 }
