@@ -10,9 +10,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.ActivityMainHomeBinding
-import com.example.presentation.state.MainHomeUiState
+import com.example.presentation.state.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,7 +35,8 @@ class MainHomeActivity : AppCompatActivity() {
 
         // mainHomeUiState 관찰
         setupObservers()
-        // UI 이벤트 발생 시 로직
+
+        // UI 이벤트 리스너
         setupListeners()
 
         // 초기 UI 상태 설정
@@ -44,18 +47,50 @@ class MainHomeActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         lifecycleScope.launch {
-            viewModel.mainHomeUiState.collect { state ->
-                val uiState = state.data ?: MainHomeUiState()
-                binding.apply {
-                    btnSave.isEnabled = uiState.isBtnSaveEnabled
-                    inputName.isEnabled = !uiState.isBtnBackVisible
-                    if (uiState.isUsernameClear) inputName.setText("")
-                    btnSave.visibility = if (uiState.isBtnSaveVisible) VISIBLE else GONE
-                    textFortune.visibility = if (uiState.isTextFortuneVisible) VISIBLE else GONE
-                    btnBack.visibility = if (uiState.isBtnBackVisible) VISIBLE else GONE
-                    textFortune.text = uiState.totalInfoData?.content
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mainHomeUiState.collect { state ->
+                    when (state) {
+                        is UiState.Loading -> showLoadingState()
+                        is UiState.Success -> showSuccessState(state.data)
+                        is UiState.Error -> showErrorState(state.message, state.data ?: MainHomeUiState())
+                        else -> Unit
+                    }
                 }
             }
+        }
+    }
+
+    private fun showLoadingState() {
+        binding.apply {
+            progressBar.visibility = VISIBLE
+            btnSave.isEnabled = false
+            inputName.isEnabled = false
+        }
+    }
+
+    private fun showSuccessState(uiState: MainHomeUiState) {
+        binding.apply {
+            progressBar.visibility = GONE
+            btnSave.isEnabled = uiState.isBtnSaveEnabled
+            inputName.isEnabled = !uiState.isBtnBackVisible
+            if (uiState.isUsernameClear) inputName.setText("")
+            btnSave.visibility = if (uiState.isBtnSaveVisible) VISIBLE else GONE
+            textFortune.visibility = if (uiState.isTextFortuneVisible) VISIBLE else GONE
+            btnBack.visibility = if (uiState.isBtnBackVisible) VISIBLE else GONE
+            textFortune.text = uiState.totalInfoData?.content ?: "운세 정보 없음"
+        }
+    }
+
+    private fun showErrorState(errorMessage: String, uiState: MainHomeUiState) {
+        binding.apply {
+            progressBar.visibility = GONE
+            btnSave.isEnabled = uiState.isBtnSaveEnabled
+            inputName.isEnabled = !uiState.isBtnBackVisible
+            if (uiState.isUsernameClear) inputName.setText("")
+            btnSave.visibility = if (uiState.isBtnSaveVisible) VISIBLE else GONE
+            textFortune.visibility = if (uiState.isTextFortuneVisible) VISIBLE else GONE
+            btnBack.visibility = if (uiState.isBtnBackVisible) VISIBLE else GONE
+            textFortune.text = errorMessage
         }
     }
 
