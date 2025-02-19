@@ -2,7 +2,7 @@ package com.example.data.mapper
 
 import com.example.data.dto.FortuneInfoDto
 import com.example.data.dto.UserInfoDto
-import com.example.data.room.TotalInfoEntity
+import com.example.data.room.entity.TotalInfoEntity
 import com.example.domain.model.TotalInfoData
 
 // dto -> entity -> model
