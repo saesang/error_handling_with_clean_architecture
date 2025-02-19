@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".error_handling.ErrorHandlingActivity"
+            android:name=".error.ErrorHandlingActivity"
             android:exported="false" />
     </application>
 
