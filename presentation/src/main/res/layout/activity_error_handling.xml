@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".error_handling.ErrorHandlingActivity">
+    tools:context=".error.ErrorHandlingActivity">
 
     <TextView
         android:id="@+id/txt_error"

@@ -2,15 +2,11 @@ package com.example.presentation.util
 
 object TextValidator {
     fun isValidText(input: String): Boolean {
-        if (input.isEmpty()) return false
-        if (input.isBlank()) return false
+        if (input.isEmpty() || input.isBlank()) return false
 
-        val alphabetRegex = Regex("^[a-zA-Z]+( [a-zA-Z]+)?\$")
-        if (alphabetRegex.matches(input)) return true
+        val alphabetRegex = Regex("^[a-zA-Z]+( [a-zA-Z]+)?\$") // 영문
+        val koreanRegex = Regex("^[가-힣]+$") // 한글
 
-        val koreanRegex = Regex("^[가-힣]+$")
-        if (koreanRegex.matches(input)) return true
-
-        return false
+        return alphabetRegex.matches(input) || koreanRegex.matches(input)
     }
 }
