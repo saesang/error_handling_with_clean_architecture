@@ -1,4 +1,4 @@
-package com.example.presentation.error
+package com.example.presentation.exception
 
 import android.content.Intent
 import android.os.Bundle
