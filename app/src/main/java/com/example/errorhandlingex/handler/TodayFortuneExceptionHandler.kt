@@ -5,7 +5,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.os.Process
-import com.example.presentation.error.ErrorHandlingActivity
+import com.example.presentation.exception.ErrorHandlingActivity
 import java.io.PrintWriter
 import java.io.StringWriter
 import kotlin.system.exitProcess
