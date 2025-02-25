@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.data.room.entity.ErrorLogEntity
+import com.example.data.room.entity.TotalInfoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,4 +17,8 @@ interface TodayFortuneDao {
     // totalInfo DB에 저장
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTotalInfo(totalInfo: TotalInfoEntity)
+
+    // errorLog DB에 저장
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertErrorLog(errorLog: ErrorLogEntity)
 }

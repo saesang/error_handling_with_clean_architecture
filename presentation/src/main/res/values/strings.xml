@@ -6,4 +6,23 @@
     <string name="again_btn">다시하기</string>
     <string name="alert_error">에러가 발생했습니다!!</string>
     <string name="error_handling_btn">새로고침</string>
+
+    <!-- ErrorMessage: Failure -->
+    <string name="error_message_network_failure">네트워크 연결이 불안정합니다. 연결을 확인해 주세요</string>
+    <string name="error_message_server_failure">서버에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_message_database_failure">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_message_business_failure">잘못된 접근입니다</string>
+    <string name="error_message_validation_failure">잘못된 입력값입니다</string>
+    <string name="error_message_app_crash_failure">시스템 오류가 발생했습니다. 새로고침을 시도해 주세요</string>
+    <string name="error_message_unknown_failure">알 수 없는 오류가 발생했습니다. 새로고침을 시도해 주세요</string>
+
+    <!-- ErrorMessage: UiException -->
+    <string name="error_message_ui_state_error">예상치 못한 오류가 발생했습니다. 새로고침을 시도해 주세요</string>
+    <string name="error_message_ui_index_error">데이터를 불러오는 중 문제가 발생했습니다. 고객센터로 문의해 주세요</string>
+    <string name="error_message_device_security_error">기기 접근 권한이 필요합니다. "'"설정"'"에서 기기 접근을 허용해 주세요</string>
+    <string name="error_message_camera_access_error">카메라를 사용할 수 없습니다. 실행 중인 다른 앱을 종료한 후, 다시 시도해 주세요</string>
+    <string name="error_message_buffer_overflow_error">출력 데이터가 너무 많아 프린터가 응답하지 않습니다. 잠시 후 다시 시도해 주세요</string>
+    <string name="error_message_device_access_error">연결할 기기를 찾을 수 없습니다. 고객센터로 문의해 주세요</string>
+    <string name="error_message_memory_error">시스템 오류가 발생했습니다. 새로고침을 시도해 주세요</string>
+    <string name="error_message_unknown_error">알 수 없는 오류가 발생했습니다. 새로고침을 시도해 주세요</string>
 </resources>

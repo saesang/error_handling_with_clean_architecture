@@ -14,6 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.presentation.databinding.ActivityMainHomeBinding
+import com.example.presentation.exception.UiException
+import com.example.presentation.exception.UiException.Companion.toFailure
 import com.example.presentation.state.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -81,7 +83,7 @@ class MainHomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorState(errorMessage: String, uiState: MainHomeUiState) {
+    private fun showErrorState(errorMessage: String?, uiState: MainHomeUiState) {
         binding.apply {
             progressBar.visibility = GONE
             btnSave.isEnabled = uiState.isBtnSaveEnabled
@@ -91,36 +93,46 @@ class MainHomeActivity : AppCompatActivity() {
             textFortune.visibility = if (uiState.isTextFortuneVisible) VISIBLE else GONE
             btnBack.visibility = if (uiState.isBtnBackVisible) VISIBLE else GONE
             textFortune.text = errorMessage
+
+            if (errorMessage != null) {
+                // dialog 생성하는 로직 구현
+            }
         }
     }
 
     private fun setupListeners() {
-        with(binding) {
-            // 유효한 이름 입력 시 '확인' 버튼 활성화
-            inputName.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                override fun afterTextChanged(s: Editable?) {
-                    val inputName = s.toString()
+        try {
+            with(binding) {
+                // 유효한 이름 입력 시 '확인' 버튼 활성화
+                inputName.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun afterTextChanged(s: Editable?) {
+                        val inputName = s.toString()
+                        lifecycleScope.launch {
+                            viewModel.onTextChanged(inputName)
+                        }
+                    }
+                })
+
+                // '확인' 버튼 클릭 시 운세 정보 가져오기
+                btnSave.setOnClickListener {
+                    val username = inputName.text.toString()
                     lifecycleScope.launch {
-                        viewModel.onTextChanged(inputName)
+                        viewModel.updateUiState(username)
                     }
                 }
-            })
 
-            // '확인' 버튼 클릭 시 운세 정보 가져오기
-            btnSave.setOnClickListener {
-                val username = inputName.text.toString()
-                lifecycleScope.launch {
-                    viewModel.updateUiState(username)
+                // '뒤로가기' 버튼 클릭 시 초기화
+                btnBack.setOnClickListener {
+                    lifecycleScope.launch {
+                        viewModel.setInitUiState()
+                    }
                 }
             }
-
-            // '뒤로가기' 버튼 클릭 시 초기화
-            btnBack.setOnClickListener {
-                lifecycleScope.launch {
-                    viewModel.setInitUiState()
-                }
+        } catch (e: Exception) {    // 에러 핸들링 로직 추가
+            lifecycleScope.launch {
+                viewModel.mapFailureToUiState(UiException.mapToUiException(e, this@MainHomeActivity).toFailure())
             }
         }
     }

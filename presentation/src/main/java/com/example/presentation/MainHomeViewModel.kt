@@ -1,11 +1,12 @@
 package com.example.presentation
 
-import androidx.lifecycle.ViewModel
+import android.content.Context
 import com.example.domain.model.Failure
 import com.example.domain.model.ResultWrapper
 import com.example.domain.model.TotalInfoData
 import com.example.domain.usecase.FetchTotalInfoUseCase
 import com.example.domain.usecase.GetTotalInfoUseCase
+import com.example.presentation.base.BaseViewModel
 import com.example.presentation.state.UiState
 import com.example.presentation.util.TextValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 class MainHomeViewModel @Inject constructor(
     private val getTotalInfoUseCase: GetTotalInfoUseCase,
     private val fetchTotalInfoUseCase: FetchTotalInfoUseCase
-) : ViewModel() {
+) : BaseViewModel() {
     private val _mainHomeUiState =
         MutableStateFlow<UiState<MainHomeUiState>>(UiState.Success(MainHomeUiState()))
     val mainHomeUiState = _mainHomeUiState.asStateFlow()
@@ -64,14 +65,8 @@ class MainHomeViewModel @Inject constructor(
         }
     }
 
-    private fun mapFailureToUiState(failure: Failure): UiState.Error<MainHomeUiState> {
-        val errorMessage = when (failure) {
-            is Failure.NetworkFailure -> "네트워크 연결이 불안정합니다. 연결을 확인해 주세요."
-            is Failure.ServerFailure -> "서버에서 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
-            is Failure.DatabaseFailure, is Failure.FileIOFailure -> "데이터를 불러오지 못했습니다. 다시 시도해 주세요."
-            is Failure.ValidationFailure, is Failure.BusinessFailure -> "입력값이 잘못되었습니다. 다시 입력해 주세요."
-            is Failure.UnknownFailure -> failure.message
-        }
+    suspend fun mapFailureToUiState(failure: Failure): UiState.Error<MainHomeUiState> {
+        val errorMessage = handleFailure(failure)
 
         val errorState = initialState.copy(
             isUsernameClear = false,
