@@ -17,4 +17,4 @@
 
 ## Error Handling Flow
 
-![ErrorHandlingFlowCrop](https://github.com/user-attachments/assets/57a54bd8-626a-42da-9ac6-07779924f3cb)
+![ErrorHandlingFlow_ver2](https://github.com/user-attachments/assets/e777ad42-530b-4eda-879d-2d1598f688cd)
